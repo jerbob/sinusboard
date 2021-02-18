@@ -17,7 +17,7 @@ ENV PYTHONUNBUFFERED=1 \
   PYTHONPYCACHEPREFIX=/tmp \
   PATH=/root/.poetry/bin:/app/src/manage.py${PATH}
 
-RUN poetry install --no-root --no-interaction \
+RUN poetry install --no-root --no-interaction --no-dev \
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false $BUILD_DEPS
 
 COPY . /app/
