@@ -12,11 +12,14 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Build Docker Container
-      run: docker build -t ghcr.io/jerbob/sinusboard .
-
     - name: Login to Github Container Registry
       run: echo ${{ secrets.GH_TOKEN }} | docker login ghcr.io -u ${{ secrets.GH_USER }} --password-stdin
+
+    - name: Pull current latest tag
+      run: docker pull ghcr.io/jerbob/sinusboard
+
+    - name: Build Docker Container
+      run: docker build -t ghcr.io/jerbob/sinusboard .
 
     - name: Push to Github Container Registry
       run: docker push ghcr.io/jerbob/sinusboard
