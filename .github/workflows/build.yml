@@ -1,0 +1,22 @@
+name: Build Docker Container
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Build Docker Container
+      run: docker build -t ghcr.io/jerbob/sinusboard .
+
+    - name: Login to Github Container Registry
+      run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ secrets.GITHUB_USER }} --password-stdin
+
+    - name: Push to Github Container Registry
+      run: docker push ghcr.io/jerbob/sinusboard
