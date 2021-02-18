@@ -76,3 +76,16 @@ html, body {
   height: 100%;
   overflow: hidden
 }
+
+html,
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+body > footer {
+    margin-top: auto;
+}
+footer {
+  padding: 3rem 1.5rem 3rem !important
+}
