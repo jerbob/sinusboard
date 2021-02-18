@@ -25,4 +25,4 @@ def play(uuid: str):
     return client.play_clip(uuid)
 
 
-app.wsgi_app = WhiteNoise(app.wsgi_app, root="static/")
+app.wsgi_app = WhiteNoise(app.wsgi_app, root="sinusboard/server/static/")
