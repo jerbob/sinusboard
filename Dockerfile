@@ -14,7 +14,8 @@ WORKDIR /app/
 
 ENV PYTHONUNBUFFERED=1 \
   PIP_NO_CACHE_DIR=off \
-  PYTHONPYCACHEPREFIX=/tmp
+  PYTHONPYCACHEPREFIX=/tmp \
+  PATH=/root/.poetry/bin:${PATH}
 
 RUN poetry install --no-root --no-interaction --no-dev \
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false $BUILD_DEPS
