@@ -16,7 +16,7 @@ jobs:
       run: docker build -t ghcr.io/jerbob/sinusboard .
 
     - name: Login to Github Container Registry
-      run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ secrets.GITHUB_USER }} --password-stdin
+      run: echo ${{ secrets.GH_TOKEN }} | docker login ghcr.io -u ${{ secrets.GH_USER }} --password-stdin
 
     - name: Push to Github Container Registry
       run: docker push ghcr.io/jerbob/sinusboard
