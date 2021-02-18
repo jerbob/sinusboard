@@ -23,6 +23,5 @@ RUN poetry install --no-root --no-interaction --no-dev \
 COPY . /app/
 
 EXPOSE 8000
-WORKDIR /app/src/
 
 CMD ["gunicorn", "--workers", "12", "--bind", "0.0.0.0:8000", "sinusboard:server.app"]
