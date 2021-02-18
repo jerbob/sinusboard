@@ -2,9 +2,9 @@
 
 from typing import Final
 
-from requests_html import HTMLSession
+from requests import Session
 
-session = HTMLSession()
+session = Session()
 
 AUTHORIZATION: Final[dict[str, str]] = {
     "botId": "68f1f867-32f7-431c-af97-7604ee4dcbf3",
