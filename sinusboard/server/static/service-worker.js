@@ -1,19 +1,8 @@
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker
-    .register('./service-worker.js')
-    .then(function(registration) {
-        console.log('Service Worker Registered!');
-        return registration;
-    })
-    .catch(function(err) {
-        console.error('Unable to register service worker.', err);
-    });
-}
-
 const CACHE_NAME = 'static-cache';
 
 const FILES_TO_CACHE = [
   '/static/js/index.js',
+  '/static/css/index.css',
 ];
 
 self.addEventListener('install', (evt) => {
