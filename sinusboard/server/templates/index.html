@@ -20,8 +20,9 @@
           <h1 class="title">
             Sinusboard
           </h1>
-          <button class="button is-info">Certified Hood Classic</button>
-          <button class="button is-info">See ya man</button>
+          {% for clip in clips %}
+            <button class="button is-info" v-on:click="playClip('{{ clip.uuid }}')">{{ clip.name }}</button>
+          {% endfor %}
         </div>
       </section>
     </data>

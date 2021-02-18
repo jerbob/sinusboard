@@ -1,19 +1,36 @@
 """Initialise the client for SinusBot operations."""
 
 from typing import Final
+
 from requests_html import HTMLSession
 
-
-API_ROOT: Final[str] = "http://ix1game01.infernolan.co.uk:8087/api/v1/bot"
-
-AUTHORIZATION: Final[str] = (
-    "ugHwuXsiaSI6ImE5ZGQyZmM2LWQ4NWMtNDUyNS1iZWE0LTk4MGExYTA4NDQ0NSIsImIiOiI2OGYxZjg2Ny0zMmY3LTQzMWMtYW"
-    "Y5Ny03NjA0ZWU0ZGNiZjMiLCJ1IjoiamVyYm9iIiwidCI6MTYxMzUyMTg3MCwicyI6IjQ3OGY1Y2M2ODkwNDk4NDA4ZGI5OWVl"
-    "ZWQxYTQ4NDk1ZGVmMmJjNTI0MzM0NDliZWQzNjlkYTU5MTA3NTk5YTcifQ=="
-).replace("\n", "")
-
-
 session = HTMLSession()
-session.headers["Authorization"] = f"Bearer {AUTHORIZATION}"
 
-playlists = session.get(f"{API_ROOT}/files")
+AUTHORIZATION: Final[dict[str, str]] = {
+    "botId": "68f1f867-32f7-431c-af97-7604ee4dcbf3",
+    "password": "Meme",
+    "username": "jerbob",
+}
+API_ROOT: Final[str] = "http://ix1game01.infernolan.co.uk:8087/api/v1/bot"
+PLAY: Final[
+    str
+] = f"{API_ROOT}/i/82faa775-298d-4c9f-9827-4dd8b91399b0/play/byId/{{uuid}}"
+TOKEN: Final[str] = (
+    session.post(f"{API_ROOT}/login", json=AUTHORIZATION).json().get("token")
+)
+
+CLIPS: Final[list[dict[str, str]]] = [
+    {"name": "Certified Hood Classic", "uuid": "cdd5d14e-326e-4ede-ab77-a59483b06db9"},
+    {"name": "See ya man", "uuid": "655907d2-c9b8-4eec-bd40-fdbf670a2921"},
+    {"name": "Among Drip", "uuid": "02c48548-a728-4e4d-9288-52b1a72c0e57"},
+    {"name": "Vine Thud", "uuid": "c979bcfb-4be2-4378-b03b-351261fe9ef0"},
+    {"name": "Ring ding ding", "uuid": "b00bdfd6-b258-433f-9897-9357b5bb2aab"},
+    {"name": "Dream", "uuid": "f84cffbe-5cfc-4ddf-b8d2-e6e4c3ab6c50"},
+]
+
+session.headers["Authorization"] = f"Bearer {TOKEN}"
+
+
+def play_clip(uuid: str) -> None:
+    """Play the specified clip using SinusBot."""
+    return session.post(PLAY.format(uuid=uuid)).json()

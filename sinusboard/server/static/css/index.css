@@ -1,3 +1,4 @@
+
 .container {
   text-align: center;
 }
@@ -38,66 +39,16 @@ a {
   box-shadow: none;
 }
 
-#chatroom {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
 .hero-body, .section {
   padding: 1.5rem;
-}
-
-.message-bar {
-  position: fixed;
-  bottom: 0.4em;
-  right: 0.4em;
-  left: 0.4em;
-  border-radius: 0.4em;
-  box-shadow: 0px 0px 100px 3px #1c2121;
-}
-
-.logo-navbar {
-  font-size: 2rem;
-  position: relative;
-  bottom: 0.0rem;
-  right: 0.3rem;
-}
-
-.navbar {
-  background-color: #282f2f;
-  border-radius: none;
-}
-
-.navbar-logo {
-  font-size: 1.9rem;
-  margin-right: 0.3rem;
-}
-
-.logout-logo {
-  font-size: 1.9rem;
-  margin-left: 0.3rem;
 }
 
 .title {
   font-weight: bold;
 }
 
-.navbar-link.is-active, .navbar-link:focus, .navbar-link:focus-within, .navbar-link:hover, a.navbar-item.is-active, a.navbar-item:focus, a.navbar-item:focus-within, a.navbar-item:hover {
-  color: #53a9e2;
-}
-
 .is-danger {
   background-color: #E54B4B !important;
-}
-
-.navbar-brand {
-  width: 100%;
-}
-
-.navbar-end {
-  margin-top: 0.7rem;
-  margin-left: auto;
-  margin-right: 0.7rem;
 }
 
 .button.is-danger {
@@ -105,22 +56,10 @@ a {
   padding-right: 0.5rem;
 }
 
-.room-field {
-  margin-bottom: auto;
-  margin-top: auto;
-  width: 100%;
-  margin-right: 0.7rem;
+.button.is-info {
+  margin-bottom: 0.65rem;
 }
 
-.room-input {
-  color: #53A9E2;
-  background-color: #343C3D;
-  text-decoration: underline;
-}
-
-.copy-button {
-  background-color: #1F2424 !important;
-}
 
 @font-face {
   font-family: 'Relative Mono';
@@ -133,4 +72,7 @@ a {
   box-shadow: none !important;
 }
 
-html, body {margin: 0; height: 100%; overflow: hidden}
+html, body {
+  height: 100%;
+  overflow: hidden
+}
