@@ -1,6 +1,7 @@
 """Initialise the client for SinusBot operations."""
 
-from typing import Final
+from json import JSONDecodeError
+from typing import Final, Optional
 
 from requests import Session
 
@@ -28,6 +29,12 @@ CLIPS: Final[list[dict[str, str]]] = [
 session.headers["Authorization"] = f"Bearer {TOKEN}"
 
 
-def play_clip(uuid: str) -> None:
+def play_clip(uuid: str) -> dict:
     """Play the specified clip using SinusBot."""
-    return session.post(PLAY.format(uuid=uuid)).json()
+    response = session.post(PLAY.format(uuid=uuid))
+    try:
+        return response.json()
+    except JSONDecodeError:
+        print(f"[!] Invalid response from SinusBot:")
+        print(response.content.decode())
+        return {}
