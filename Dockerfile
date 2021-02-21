@@ -3,7 +3,7 @@ FROM python:3.9-slim
 ARG BUILD_DEPS="build-essential curl"
 
 RUN set -ex \
-  && apt-get update && apt-get -y --no-install-recommends install $BUILD_DEPS \
+  && apt-get update && apt-get -y --no-install-recommends install $BUILD_DEPS ffmpeg \
   && rm -rf /var/lib/apt/lists/* \
   && curl -sSL "https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py" | POETRY_PREVIEW=1 python \
   && . $HOME/.poetry/env \
