@@ -20,6 +20,11 @@
   border-radius: 0;
 }
 
+.section {
+  margin: 0 auto;
+  max-width: 75%;
+}
+
 .button.is-info {
   background-color: #343c3d;
   margin-bottom: 0.65rem;
@@ -49,6 +54,10 @@ a {
 
 .input:active, .input:focus, .is-active.input, .is-active.textarea, .is-focused.input, .is-focused.textarea, .select select.is-active, .select select.is-focused, .select select:active, .select select:focus, .textarea:active, .textarea:focus {
   box-shadow: none;
+}
+
+.rounded {
+  border-radius: 0.8rem;
 }
 
 .hero-body, .section {
