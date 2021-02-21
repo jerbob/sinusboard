@@ -88,7 +88,7 @@ hr {
 
 @font-face {
   font-family: 'Relative Mono';
-  src: url(//jerbob.me/relative-mono-11-pitch.woff);
+  src: url(/static/fonts/relative-mono-11-pitch.woff);
 }
 
 * {
