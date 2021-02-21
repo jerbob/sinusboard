@@ -30,6 +30,11 @@ def service_worker():
     return app.send_static_file("service-worker.js")
 
 
+@app.route("/favicon.ico")
+def favicon():
+    return app.send_static_file("favicon.ico")
+
+
 @app.route("/play/<uuid:uuid>")
 def play(uuid: str):
     return client.play_clip(uuid)
