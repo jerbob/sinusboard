@@ -1,4 +1,4 @@
-const YOUTUBE_RE = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/
+const HTTP_RE = /http(?:s?):\/\/.*/
 
 var app = new Vue({
     el: '#app',
@@ -15,7 +15,7 @@ var app = new Vue({
         },
         uploadClip() {
           var linkText = document.getElementById("link").value
-          if (!YOUTUBE_RE.test(linkText)) {
+          if (!HTTP_RE.test(linkText)) {
             linkText = "ytsearch:" + linkText
           }
           document.getElementById("upload").classList.add("is-loading")
