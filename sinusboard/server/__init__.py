@@ -46,4 +46,9 @@ def upload():
     return client.upload_clip(link)
 
 
+@app.route("/delete/<uuid:uuid>")
+def delete(uuid: str):
+    return client.delete_clip(uuid)
+
+
 app.wsgi_app = WhiteNoise(app.wsgi_app, root="sinusboard/server/static/")

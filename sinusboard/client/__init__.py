@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any, Final, Optional
 
 from requests import Session
+from requests.models import Response
 from youtube_dl import YoutubeDL, DownloadError
 
 
@@ -75,26 +76,32 @@ def get_clip(uuid: str) -> dict[str, str]:
         return {"uuid": uuid}
 
 
-def play_clip(uuid: str) -> dict:
-    """Play the specified clip using SinusBot."""
-    response = session.post(PLAY_URL.format(uuid=uuid))
+def parse_response(response: Response) -> dict:
+    """Attempt the parse the provided SinusBot API response."""
     try:
         return response.json()
     except JSONDecodeError:
         print(f"[!] Invalid response from SinusBot:")
         print(response.content.decode())
         return {}
+
+
+def play_clip(uuid: str) -> dict:
+    """Play the specified clip using SinusBot."""
+    response = session.post(PLAY_URL.format(uuid=uuid))
+    return parse_response(response)
 
 
 def queue_clip(uuid: str) -> dict:
     """Append the specified clip to the SinusBot queue."""
     response = session.post(QUEUE_URL.format(uuid=uuid))
-    try:
-        return response.json()
-    except JSONDecodeError:
-        print(f"[!] Invalid response from SinusBot:")
-        print(response.content.decode())
-        return {}
+    return parse_response(response)
+
+
+def delete_clip(uuid: str) -> dict:
+    """Delete the provided uuid from the file list."""
+    response = session.delete(f"{API_ROOT}/files/{uuid}")
+    return parse_response(response)
 
 
 def upload_clip(link: str) -> dict:
@@ -105,8 +112,9 @@ def upload_clip(link: str) -> dict:
 
     # Get the first video if a playlist (or search query) was provided
     result = result if not result.get("_type") == "playlist" else result["entries"][0]
+    title = result["title"].replace('"', "'")
 
-    audio = Path(f"{result['title']}-{result['id']}.mp3")
+    audio = Path(f"{title}-{result['id']}.mp3")
     with audio.open("rb") as file:
         payload = file.read()
     audio.unlink()

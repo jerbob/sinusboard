@@ -47,7 +47,7 @@
 
         <table class="table is-fullwidth rounded is-hoverable">
           <tbody>
-            <tr v-for="file in files">
+            <tr v-for="file in files" v-bind:id="[[ file.uuid ]]">
               <td>[[ file.name ]]</td>
               <td>[[ file.length ]]</td>
               <td>
@@ -56,10 +56,13 @@
               <td>
                 <a class="dotted" v-on:mousedown="playClip(file.uuid)">Play</a>
               </td>
+              <td>
+                <a class="dotted" v-on:mousedown="deleteClip(file.uuid)">Delete</a>
+              </td>
             </tr>
 
             {% for file in files %}
-              <tr>
+              <tr id="{{ file.uuid }}">
                 <td>{{ file.name }}</td>
                 <td>{{ file.length }}</td>
                 <td>
@@ -67,6 +70,9 @@
                 </td>
                 <td>
                   <a class="dotted" v-on:mousedown="playClip('{{ file.uuid }}')">Play</a>
+                </td>
+                <td>
+                  <a class="dotted" v-on:mousedown="deleteClip('{{ file.uuid }}')">Delete</a>
                 </td>
               </tr>
             {% endfor %}
