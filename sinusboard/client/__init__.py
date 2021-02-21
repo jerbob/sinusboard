@@ -1,11 +1,16 @@
 """Initialise the client for SinusBot operations."""
 
+import contextlib
 import itertools
+import tempfile
 from functools import lru_cache
 from json import JSONDecodeError
-from typing import Final, Optional
+from pathlib import Path
+from typing import Any, Final, Optional
 
 from requests import Session
+from youtube_dl import YoutubeDL, DownloadError
+
 
 session = Session()
 
@@ -13,6 +18,17 @@ AUTHORIZATION: Final[dict[str, str]] = {
     "botId": "68f1f867-32f7-431c-af97-7604ee4dcbf3",
     "password": "Meme",
     "username": "jerbob",
+}
+
+YTDL_OPTIONS: Final[dict[str, Any]] = {
+    "format": "bestaudio/best",
+    "postprocessors": [
+        {
+            "key": "FFmpegExtractAudio",
+            "preferredcodec": "mp3",
+            "preferredquality": "192",
+        }
+    ],
 }
 
 INSTANCE: Final[str] = "82faa775-298d-4c9f-9827-4dd8b91399b0"
@@ -44,6 +60,14 @@ session.headers["Authorization"] = f"Bearer {TOKEN}"
 
 
 @lru_cache
+def get_duration(milliseconds: int) -> str:
+    """Get a displayable label for duration given milliseconds."""
+    seconds = int(milliseconds * 0.001)
+    minutes, seconds = divmod(seconds, 60)
+    return f"{minutes:02d}:{seconds:02d}"
+
+
+@lru_cache
 def get_clip(uuid: str) -> dict[str, str]:
     """Lookup the clip object, given a UUID."""
     try:
@@ -72,3 +96,23 @@ def queue_clip(uuid: str) -> dict:
         print(f"[!] Invalid response from SinusBot:")
         print(response.content.decode())
         return {}
+
+
+def upload_clip(link: str) -> dict:
+    """Download the provided URL with ytdl, then upload it manually to SinusBot."""
+    result = {}
+    _, filename = tempfile.mkstemp()
+    with YoutubeDL(YTDL_OPTIONS) as ytdl, contextlib.suppress(DownloadError):
+        result = ytdl.extract_info(link)
+    audio = Path(f"{result['title']}-{result['id']}.mp3")
+    with audio.open("rb") as file:
+        payload = file.read()
+    audio.unlink()
+    response = session.post(
+        f"{API_ROOT}/upload", data=payload, params={"filename": result["title"]}
+    ).json()
+    return {
+        "uuid": response["uuid"],
+        "name": response["title"],
+        "length": get_duration(response["duration"]),
+    }

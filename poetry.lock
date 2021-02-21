@@ -397,10 +397,18 @@ python-versions = ">=3.5, <4"
 [package.extras]
 brotli = ["brotli"]
 
+[[package]]
+name = "youtube-dl"
+version = "2021.2.10"
+description = "YouTube video downloader"
+category = "main"
+optional = false
+python-versions = "*"
+
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "ba6f7546e3acfbe6042fda1a559e28ac727a44f37c875d1c051fbe050e1329fd"
+content-hash = "d9541b7adb5f6b942047bc038b180ee4b646bc841f9402eaff100789502fa499"
 
 [metadata.files]
 appdirs = [
@@ -668,4 +676,8 @@ werkzeug = [
 whitenoise = [
     {file = "whitenoise-5.2.0-py2.py3-none-any.whl", hash = "sha256:05d00198c777028d72d8b0bbd234db605ef6d60e9410125124002518a48e515d"},
     {file = "whitenoise-5.2.0.tar.gz", hash = "sha256:05ce0be39ad85740a78750c86a93485c40f08ad8c62a6006de0233765996e5c7"},
+]
+youtube-dl = [
+    {file = "youtube_dl-2021.2.10-py2.py3-none-any.whl", hash = "sha256:e7d48cd42f3081e1e0064e69f31f2856508ef31c0fc80eeebd8e70c6a031a24d"},
+    {file = "youtube_dl-2021.2.10.tar.gz", hash = "sha256:b390cddbd4d605bd887d0d4063988cef0fa13f916d2e1e3564badbb22504d754"},
 ]

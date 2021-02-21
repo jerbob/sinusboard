@@ -8,15 +8,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="A Sinusbot API wrapper for the InfernoLAN teamspeak.">
 
-    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
-    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.0.45/css/materialdesignicons.min.css">
+    <link rel="manifest" href="/static/manifest.json">
     <link rel="stylesheet" href="https://unpkg.com/bulmaswatch/darkly/bulmaswatch.min.css">
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.0.45/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="/static/css/index.css">
 
-    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script defer src="/static/js/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
   </head>
+
   <body>
     <data id="app">
       <section class="section">
@@ -26,20 +26,20 @@
             Sinusboard
           </h1>
           {% for clip in clips %}
-            <button class="button" v-on:mousedown="playClip('{{ clip.uuid }}')">{{ clip.name }}</button>
+            <button class="button is-pad" v-on:mousedown="playClip('{{ clip.uuid }}')">{{ clip.name }}</button>
           {% endfor %}
           {% for sample in samples %}
-            <button class="button" v-on:mousedown="playClip('{{ sample.uuid }}')">{{ sample.name }}</button>
+            <button class="button is-pad" v-on:mousedown="playClip('{{ sample.uuid }}')">{{ sample.name }}</button>
           {% endfor %}
         </div>
         <hr>
 
         <div class="field has-addons">
           <div class="control is-expanded">
-            <input placeholder="" id="username" class="input" type="text">
+            <input v-on:keydown.enter="uploadClip" placeholder="" id="link" class="input" type="text">
           </div>
           <div class="control">
-            <a class="button is-info">Queue</a>
+            <a id="upload" v-on:mousedown="uploadClip" class="button is-info">Upload</a>
           </div>
         </div>
 
@@ -47,6 +47,17 @@
 
         <table class="table is-fullwidth rounded is-hoverable">
           <tbody>
+            <tr v-for="file in files">
+              <td>[[ file.name ]]</td>
+              <td>[[ file.length ]]</td>
+              <td>
+                <a class="dotted" v-on:mousedown="queueClip(file.uuid)">Queue</a>
+              </td>
+              <td>
+                <a class="dotted" v-on:mousedown="playClip(file.uuid)">Play</a>
+              </td>
+            </tr>
+
             {% for file in files %}
               <tr>
                 <td>{{ file.name }}</td>

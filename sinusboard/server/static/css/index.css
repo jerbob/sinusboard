@@ -31,6 +31,11 @@
   letter-spacing: 0.0001rem;
 }
 
+.button.is-pad {
+  margin-bottom: 0.65rem;
+  letter-spacing: 0.0001rem;
+}
+
 .button.is-error {
   margin-bottom: 0.65rem;
   letter-spacing: 0.0001rem;

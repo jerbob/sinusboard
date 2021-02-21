@@ -1,13 +1,30 @@
 var app = new Vue({
     el: '#app',
     delimiters: ['[[', ']]'],
-    data: {},
+    data: {
+      files: []
+    },
     methods: {
         playClip(uuid) {
-            fetch("/play/" + uuid).then((response) => {JSON.parse(response)})
+            fetch("/play/" + uuid).then((response) => JSON.parse(response))
         },
         queueClip(uuid) {
-            fetch("/queue/" + uuid).then((response) => {JSON.parse(response)})
+            fetch("/queue/" + uuid).then((response) => JSON.parse(response))
+        },
+        uploadClip() {
+          document.getElementById("upload").classList.add("is-loading")
+          fetch('/upload/', {
+            headers: {'Content-Type': 'application/json'},
+            method: 'POST',
+            body: JSON.stringify({link: document.getElementById("link").value})
+          }).then(
+            (response) => response.json()
+          ).then(
+            (data) => {
+              app.files.unshift(data)
+              document.getElementById("upload").classList.remove("is-loading")
+            }
+          )
         }
     }
 });
