@@ -26,7 +26,7 @@
 }
 
 .button.is-info {
-  background-color: #343c3d;
+  background-color: #343c3d !important;
   margin-bottom: 0.65rem;
   letter-spacing: 0.0001rem;
 }
@@ -120,7 +120,7 @@ footer {
   padding: 3rem 1.5rem 3rem !important
 }
 
-.button.is-error {
+.button.is-pad {
   color: #f2f2f2 !important
 }
 
