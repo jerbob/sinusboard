@@ -54,7 +54,6 @@ def get_clip(uuid: str) -> dict[str, str]:
 
 def play_clip(uuid: str) -> dict:
     """Play the specified clip using SinusBot."""
-    clip = get_clip(uuid)
     response = session.post(PLAY_URL.format(uuid=uuid))
     try:
         return response.json()
@@ -66,7 +65,6 @@ def play_clip(uuid: str) -> dict:
 
 def queue_clip(uuid: str) -> dict:
     """Append the specified clip to the SinusBot queue."""
-    clip = get_clip(uuid)
     response = session.post(QUEUE_URL.format(uuid=uuid))
     try:
         return response.json()
