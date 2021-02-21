@@ -112,7 +112,7 @@ def upload_clip(link: str) -> dict:
 
     # Get the first video if a playlist (or search query) was provided
     result = result if not result.get("_type") == "playlist" else result["entries"][0]
-    title = result["title"].replace('"', "'")
+    title = result["title"].replace('"', "'").replace("/", "_")
 
     audio = Path(f"{title}-{result['id']}.mp3")
     with audio.open("rb") as file:
