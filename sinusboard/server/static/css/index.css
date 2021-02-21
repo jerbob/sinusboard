@@ -86,3 +86,7 @@ body > footer {
 footer {
   padding: 3rem 1.5rem 3rem !important
 }
+
+.button.is-error {
+  color: #f2f2f2 !important
+}

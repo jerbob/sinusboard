@@ -24,6 +24,14 @@
             <button class="button is-info" v-on:mousedown="playClip('{{ clip.uuid }}')">{{ clip.name }}</button>
           {% endfor %}
         </div>
+
+        <hr>
+
+        <div class="container">
+          {% for sample in samples %}
+            <button class="button is-error" v-on:mousedown="playClip('{{ sample.uuid }}')">{{ sample.name }}</button>
+          {% endfor %}
+        </div>
       </section>
     </data>
   </body>

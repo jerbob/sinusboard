@@ -26,6 +26,13 @@ CLIPS: Final[list[dict[str, str]]] = [
     {"name": "Ultra Instinct", "uuid": "434d85ad-25b9-4070-b4c6-0582dccefbaa"},
 ]
 
+SAMPLES: Final[list[dict[str, str]]] = [
+    {"name": "AA", "uuid": "004221e9-5c8c-4282-8565-cdf3b5aec683"},
+    {"name": "EE", "uuid": "6e0a434f-0ffb-424a-bb6f-a233de59b782"},
+    {"name": "OO", "uuid": "c4fe3674-2698-4793-93dc-3ad89cba5dbc"},
+    {"name": "Audio Jungle", "uuid": "a30c69e9-6f74-4c06-8a9d-a08fe8a8f472"},
+]
+
 session.headers["Authorization"] = f"Bearer {TOKEN}"
 
 

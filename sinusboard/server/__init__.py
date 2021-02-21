@@ -12,7 +12,7 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     """Route for the dashboard template."""
-    return render_template("index.html", clips=client.CLIPS)
+    return render_template("index.html", clips=client.CLIPS, samples=client.SAMPLES)
 
 
 @app.route("/service-worker.js")
