@@ -34,9 +34,9 @@ CLIPS: Final[list[dict[str, str]]] = [
 ]
 
 SAMPLES: Final[list[dict[str, str]]] = [
-    {"name": "AA", "uuid": "004221e9-5c8c-4282-8565-cdf3b5aec683", "volume": "80"},
-    {"name": "EE", "uuid": "6e0a434f-0ffb-424a-bb6f-a233de59b782", "volume": "80"},
-    {"name": "OO", "uuid": "c4fe3674-2698-4793-93dc-3ad89cba5dbc", "volume": "80"},
+    {"name": "AA", "uuid": "3ec3646f-49fa-4b25-9292-3617c6ffdc03"},
+    {"name": "EE", "uuid": "5b2fea02-e64d-4f1f-998b-8dae98602bb5"},
+    {"name": "OO", "uuid": "8df22f9c-a0f1-45a2-b396-3849da724508"},
     {"name": "Audio Jungle", "uuid": "a30c69e9-6f74-4c06-8a9d-a08fe8a8f472"},
 ]
 
