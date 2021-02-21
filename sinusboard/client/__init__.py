@@ -2,7 +2,6 @@
 
 import contextlib
 import itertools
-import tempfile
 from functools import lru_cache
 from json import JSONDecodeError
 from pathlib import Path
@@ -101,16 +100,22 @@ def queue_clip(uuid: str) -> dict:
 def upload_clip(link: str) -> dict:
     """Download the provided URL with ytdl, then upload it manually to SinusBot."""
     result = {}
-    _, filename = tempfile.mkstemp()
     with YoutubeDL(YTDL_OPTIONS) as ytdl, contextlib.suppress(DownloadError):
         result = ytdl.extract_info(link)
+
+    # Get the first video if a playlist (or search query) was provided
+    result = result if not result.get("_type") == "playlist" else result["entries"][0]
+
     audio = Path(f"{result['title']}-{result['id']}.mp3")
     with audio.open("rb") as file:
         payload = file.read()
     audio.unlink()
+
+    # Upload the contents of the audio file
     response = session.post(
         f"{API_ROOT}/upload", data=payload, params={"filename": result["title"]}
     ).json()
+
     return {
         "uuid": response["uuid"],
         "name": response["title"],
