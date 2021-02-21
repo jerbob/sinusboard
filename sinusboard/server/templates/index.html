@@ -21,10 +21,10 @@
             Sinusboard
           </h1>
           {% for clip in clips %}
-            <button class="button is-info" v-on:mousedown="playClip('{{ clip.uuid }}')">{{ clip.name }}</button>
+            <button class="button" v-on:mousedown="playClip('{{ clip.uuid }}')">{{ clip.name }}</button>
           {% endfor %}
           {% for sample in samples %}
-            <button class="button is-error" v-on:mousedown="playClip('{{ sample.uuid }}')">{{ sample.name }}</button>
+            <button class="button" v-on:mousedown="playClip('{{ sample.uuid }}')">{{ sample.name }}</button>
           {% endfor %}
         </div>
         <hr>
