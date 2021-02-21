@@ -84,9 +84,13 @@ hr {
   user-select: none;
 }
 
+html::-webkit-scrollbar {
+  display: none;
+}
+
 html, body {
-  height: 100%;
-  overflow: hidden
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
 
 html,
@@ -104,4 +108,18 @@ footer {
 
 .button.is-error {
   color: #f2f2f2 !important
+}
+
+.content .content table th, .table th, tr {
+  border: 2px solid #1f2424;
+}
+
+.content table td, .content table th, .table td, .table th {
+  border-bottom: 1px solid #1f2424;
+}
+
+
+.dotted {
+  text-decoration: underline dotted;
+  color: white !important;
 }

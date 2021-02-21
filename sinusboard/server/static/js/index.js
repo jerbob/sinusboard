@@ -5,6 +5,9 @@ var app = new Vue({
     methods: {
         playClip(uuid) {
             fetch("/play/" + uuid).then((response) => {JSON.parse(response)})
+        },
+        queueClip(uuid) {
+            fetch("/queue/" + uuid).then((response) => {JSON.parse(response)})
         }
     }
 });

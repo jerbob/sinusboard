@@ -24,17 +24,30 @@
             <button class="button is-info" v-on:mousedown="playClip('{{ clip.uuid }}')">{{ clip.name }}</button>
           {% endfor %}
         </div>
-
         <hr>
-
         <div class="container">
           {% for sample in samples %}
             <button class="button is-error" v-on:mousedown="playClip('{{ sample.uuid }}')">{{ sample.name }}</button>
           {% endfor %}
         </div>
-
         <hr>
 
+        <table class="table is-fullwidth">
+          <tbody>
+            {% for file in files %}
+              <tr>
+                <td>{{ file.name }}</td>
+                <td>{{ file.length }}</td>
+                <td>
+                  <a class="dotted" v-on:mousedown="queueClip('{{ file.uuid }}')">Queue</a>
+                </td>
+                <td>
+                  <a class="dotted" v-on:mousedown="playClip('{{ file.uuid }}')">Play</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </section>
     </data>
   </body>
