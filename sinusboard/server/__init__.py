@@ -22,7 +22,9 @@ def index():
         }
         for file in reversed(client.session.get(f"{client.API_ROOT}/files").json())
     )
-    return render_template("index.html", clips=client.CLIPS, samples=client.SAMPLES, files=files)
+    return render_template(
+        "index.html", clips=client.CLIPS, samples=client.SAMPLES, files=files
+    )
 
 
 @app.route("/service-worker.js")
@@ -54,6 +56,11 @@ def upload():
 @app.route("/delete/<uuid:uuid>")
 def delete(uuid: str):
     return client.delete_clip(uuid)
+
+
+@app.route("/instances/")
+def instances():
+    return client.get_instances()
 
 
 app.wsgi_app = WhiteNoise(app.wsgi_app, root="sinusboard/server/static/")
