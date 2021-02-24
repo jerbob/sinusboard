@@ -1,84 +1,110 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Sinusboard</title>
 
-    <meta charset="utf-8">
-    <meta name="robots" content="index, follow" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="A Sinusbot API wrapper for the InfernoLAN teamspeak.">
+<head>
+  <title>Sinusboard</title>
 
-    <link rel="manifest" href="/static/manifest.json">
-    <link rel="stylesheet" href="https://unpkg.com/bulmaswatch/darkly/bulmaswatch.min.css">
-    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.0.45/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="/static/css/index.css">
+  <meta charset="utf-8">
+  <meta name="robots" content="index, follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A Sinusbot API wrapper for the InfernoLAN teamspeak.">
 
-    <script defer src="/static/js/index.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-  </head>
+  <link rel="manifest" href="/static/manifest.json">
+  <link rel="stylesheet" href="https://unpkg.com/bulmaswatch/darkly/bulmaswatch.min.css">
+  <link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.0.45/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="/static/css/index.css">
 
-  <body>
-    <data id="app">
-      <section class="section">
-        <div class="container">
-          <span class="logo mdi mdi-headphones"></span>
-          <h1 class="title">
-            Sinusboard
-          </h1>
-          {% for clip in clips %}
-            <button class="button is-pad" v-on:mousedown="playClip('{{ clip.uuid }}')">{{ clip.name }}</button>
-          {% endfor %}
-          {% for sample in samples %}
-            <button class="button is-pad" v-on:mousedown="playClip('{{ sample.uuid }}')">{{ sample.name }}</button>
-          {% endfor %}
-        </div>
-        <hr>
+  <script defer src="/static/js/index.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
 
-        <div class="field has-addons">
-          <div class="control is-expanded">
-            <input v-on:keydown.enter="uploadClip" placeholder="" id="link" class="input" type="text" autofocus>
+<body>
+  <data id="app">
+
+    <section class="section">
+      <div class="container">
+        <span class="logo mdi mdi-headphones"></span>
+        <h1 class="title">
+          Sinusboard
+        </h1>
+
+        {% for clip in clips %}
+        <button class="button is-pad" v-on:mousedown="playClip('{{ clip.uuid }}')">{{ clip.name }}</button>
+        {% endfor %}
+        {% for sample in samples %}
+        <button class="button is-pad" v-on:mousedown="playClip('{{ sample.uuid }}')">{{ sample.name
+          }}</button>
+        {% endfor %}
+      </div>
+      <hr>
+
+      <div class="columns is-centered">
+        <div class="dropdown is-hoverable">
+          <div class="dropdown-trigger">
+            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+              <span>Select Bot</span>
+            </button>
           </div>
-          <div class="control">
-            <a id="upload" v-on:mousedown="uploadClip" class="button is-info">Upload</a>
+          <div class="dropdown-menu" id="dropdown-menu" role="menu">
+            <div class="dropdown-content">
+              {% for instance in instances %}
+              <a href="#" class="dropdown-item" v-on:mousedown="setInstanceId('{{ instance.uuid }}')">{{ instance.name
+                }}</a>
+              {% endfor %}
+              </a>
+            </div>
           </div>
         </div>
+      </div>
 
-        <hr>
+      <hr>
 
-        <table class="table is-fullwidth rounded is-hoverable">
-          <tbody>
-            <tr v-for="file in files" v-bind:id="[[ file.uuid ]]">
-              <td>[[ file.name ]]</td>
-              <td>[[ file.length ]]</td>
-              <td>
-                <a class="dotted" v-on:mousedown="queueClip(file.uuid)">Queue</a>
-              </td>
-              <td>
-                <a class="dotted" v-on:mousedown="playClip(file.uuid)">Play</a>
-              </td>
-              <td>
-                <a class="dotted" v-on:mousedown="deleteClip(file.uuid)">Delete</a>
-              </td>
-            </tr>
+      <div class="field has-addons">
+        <div class="control is-expanded">
+          <input v-on:keydown.enter="uploadClip" placeholder="" id="link" class="input" type="text" autofocus>
+        </div>
+        <div class="control">
+          <a id="upload" v-on:mousedown="uploadClip" class="button is-info">Upload</a>
+        </div>
+      </div>
 
-            {% for file in files %}
-              <tr id="{{ file.uuid }}">
-                <td>{{ file.name }}</td>
-                <td>{{ file.length }}</td>
-                <td>
-                  <a class="dotted" v-on:mousedown="queueClip('{{ file.uuid }}')">Queue</a>
-                </td>
-                <td>
-                  <a class="dotted" v-on:mousedown="playClip('{{ file.uuid }}')">Play</a>
-                </td>
-                <td>
-                  <a class="dotted" v-on:mousedown="deleteClip('{{ file.uuid }}')">Delete</a>
-                </td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </section>
-    </data>
-  </body>
+      <hr>
+
+      <table class="table is-fullwidth rounded is-hoverable">
+        <tbody>
+          <tr v-for="file in files" v-bind:id="[[ file.uuid ]]">
+            <td>[[ file.name ]]</td>
+            <td>[[ file.length ]]</td>
+            <td>
+              <a class="dotted" v-on:mousedown="queueClip(file.uuid)">Queue</a>
+            </td>
+            <td>
+              <a class="dotted" v-on:mousedown="playClip(file.uuid)">Play</a>
+            </td>
+            <td>
+              <a class="dotted" v-on:mousedown="deleteClip(file.uuid)">Delete</a>
+            </td>
+          </tr>
+
+          {% for file in files %}
+          <tr id="{{ file.uuid }}">
+            <td>{{ file.name }}</td>
+            <td>{{ file.length }}</td>
+            <td>
+              <a class="dotted" v-on:mousedown="queueClip('{{ file.uuid }}')">Queue</a>
+            </td>
+            <td>
+              <a class="dotted" v-on:mousedown="playClip('{{ file.uuid }}')">Play</a>
+            </td>
+            <td>
+              <a class="dotted" v-on:mousedown="deleteClip('{{ file.uuid }}')">Delete</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+  </data>
+</body>
+
 </html>

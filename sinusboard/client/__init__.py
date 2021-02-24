@@ -5,7 +5,7 @@ import itertools
 from functools import lru_cache
 from json import JSONDecodeError
 from pathlib import Path
-from typing import Any, Final, Optional
+from typing import Any, Final, Optional, Union
 
 from requests import Session
 from requests.models import Response
@@ -31,12 +31,15 @@ YTDL_OPTIONS: Final[dict[str, Any]] = {
     ],
 }
 
-INSTANCE: Final[str] = "82faa775-298d-4c9f-9827-4dd8b91399b0"
+DEFAULT_INSTANCE: Final[str] = "82faa775-298d-4c9f-9827-4dd8b91399b0"
 API_ROOT: Final[str] = f"http://ix1game01.infernolan.co.uk:8087/api/v1/bot"
 
-PLAY_URL: Final[str] = f"{API_ROOT}/i/{INSTANCE}/play/byId/{{uuid}}"
-QUEUE_URL: Final[str] = f"{API_ROOT}/i/{INSTANCE}/queue/append/{{uuid}}"
-TOKEN: Final[str] = session.post(f"{API_ROOT}/login", json=AUTHORIZATION).json().get("token")
+PLAY_URL: Final[str] = f"{API_ROOT}/i/{{instance_uuid}}/play/byId/{{uuid}}"
+QUEUE_URL: Final[str] = f"{API_ROOT}/i/{{instance_uuid}}/queue/append/{{uuid}}"
+INSTANCES_URL: Final[str] = f"{API_ROOT}/instances"
+TOKEN: Final[str] = (
+    session.post(f"{API_ROOT}/login", json=AUTHORIZATION).json().get("token")
+)
 
 
 CLIPS: Final[list[dict[str, str]]] = [
@@ -71,12 +74,16 @@ def get_duration(milliseconds: int) -> str:
 def get_clip(uuid: str) -> dict[str, str]:
     """Lookup the clip object, given a UUID."""
     try:
-        return next(clip for clip in itertools.chain(CLIPS, SAMPLES) if clip["uuid"] == str(uuid))
+        return next(
+            clip
+            for clip in itertools.chain(CLIPS, SAMPLES)
+            if clip["uuid"] == str(uuid)
+        )
     except StopIteration:
         return {"uuid": uuid}
 
 
-def parse_response(response: Response) -> dict:
+def parse_response(response: Response) -> Union[dict, list]:
     """Attempt the parse the provided SinusBot API response."""
     try:
         return response.json()
@@ -86,15 +93,15 @@ def parse_response(response: Response) -> dict:
         return {}
 
 
-def play_clip(uuid: str) -> dict:
+def play_clip(uuid: str, instance_uuid: str = DEFAULT_INSTANCE) -> dict:
     """Play the specified clip using SinusBot."""
-    response = session.post(PLAY_URL.format(uuid=uuid))
+    response = session.post(PLAY_URL.format(instance_uuid=instance_uuid, uuid=uuid))
     return parse_response(response)
 
 
-def queue_clip(uuid: str) -> dict:
+def queue_clip(uuid: str, instance_uuid: str = DEFAULT_INSTANCE) -> dict:
     """Append the specified clip to the SinusBot queue."""
-    response = session.post(QUEUE_URL.format(uuid=uuid))
+    response = session.post(QUEUE_URL.format(instance_uuid=instance_uuid, uuid=uuid))
     return parse_response(response)
 
 
@@ -102,6 +109,12 @@ def delete_clip(uuid: str) -> dict:
     """Delete the provided uuid from the file list."""
     response = session.delete(f"{API_ROOT}/files/{uuid}")
     return parse_response(response)
+
+
+def get_instances() -> list:
+    """Get a list of instances from SinusBot."""
+    response = session.get(INSTANCES_URL)
+    return {"instances": parse_response(response)}
 
 
 def upload_clip(link: str) -> dict:
