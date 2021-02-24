@@ -31,11 +31,11 @@ YTDL_OPTIONS: Final[dict[str, Any]] = {
     ],
 }
 
-INSTANCE: Final[str] = "82faa775-298d-4c9f-9827-4dd8b91399b0"
+DEFAULT_INSTANCE: Final[str] = "82faa775-298d-4c9f-9827-4dd8b91399b0"
 API_ROOT: Final[str] = f"http://ix1game01.infernolan.co.uk:8087/api/v1/bot"
 
-PLAY_URL: Final[str] = f"{API_ROOT}/i/{INSTANCE}/play/byId/{{uuid}}"
-QUEUE_URL: Final[str] = f"{API_ROOT}/i/{INSTANCE}/queue/append/{{uuid}}"
+PLAY_URL: Final[str] = f"{API_ROOT}/i/{{instance_uuid}}/play/byId/{{uuid}}"
+QUEUE_URL: Final[str] = f"{API_ROOT}/i/{{instance_uuid}}/queue/append/{{uuid}}"
 INSTANCES_URL: Final[str] = f"{API_ROOT}/instances"
 TOKEN: Final[str] = (
     session.post(f"{API_ROOT}/login", json=AUTHORIZATION).json().get("token")
@@ -93,15 +93,15 @@ def parse_response(response: Response) -> Union[dict, list]:
         return {}
 
 
-def play_clip(uuid: str) -> dict:
+def play_clip(uuid: str, instance_uuid: str = DEFAULT_INSTANCE) -> dict:
     """Play the specified clip using SinusBot."""
-    response = session.post(PLAY_URL.format(uuid=uuid))
+    response = session.post(PLAY_URL.format(instance_uuid=instance_uuid, uuid=uuid))
     return parse_response(response)
 
 
-def queue_clip(uuid: str) -> dict:
+def queue_clip(uuid: str, instance_uuid: str = DEFAULT_INSTANCE) -> dict:
     """Append the specified clip to the SinusBot queue."""
-    response = session.post(QUEUE_URL.format(uuid=uuid))
+    response = session.post(QUEUE_URL.format(instance_uuid=instance_uuid, uuid=uuid))
     return parse_response(response)
 
 
