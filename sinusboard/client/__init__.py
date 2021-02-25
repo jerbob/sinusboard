@@ -2,6 +2,7 @@
 
 import contextlib
 import itertools
+import re
 from functools import lru_cache
 from json import JSONDecodeError
 from pathlib import Path
@@ -37,9 +38,7 @@ API_ROOT: Final[str] = f"http://ix1game01.infernolan.co.uk:8087/api/v1/bot"
 PLAY_URL: Final[str] = f"{API_ROOT}/i/{{instance_uuid}}/play/byId/{{uuid}}"
 QUEUE_URL: Final[str] = f"{API_ROOT}/i/{{instance_uuid}}/queue/append/{{uuid}}"
 INSTANCES_URL: Final[str] = f"{API_ROOT}/instances"
-TOKEN: Final[str] = (
-    session.post(f"{API_ROOT}/login", json=AUTHORIZATION).json().get("token")
-)
+TOKEN: Final[str] = session.post(f"{API_ROOT}/login", json=AUTHORIZATION).json().get("token")
 
 
 CLIPS: Final[list[dict[str, str]]] = [
@@ -74,11 +73,7 @@ def get_duration(milliseconds: int) -> str:
 def get_clip(uuid: str) -> dict[str, str]:
     """Lookup the clip object, given a UUID."""
     try:
-        return next(
-            clip
-            for clip in itertools.chain(CLIPS, SAMPLES)
-            if clip["uuid"] == str(uuid)
-        )
+        return next(clip for clip in itertools.chain(CLIPS, SAMPLES) if clip["uuid"] == str(uuid))
     except StopIteration:
         return {"uuid": uuid}
 
@@ -125,16 +120,10 @@ def upload_clip(link: str) -> dict:
 
     # Get the first video if a playlist (or search query) was provided
     result = result if not result.get("_type") == "playlist" else result["entries"][0]
-    title = (
-        result["title"]
-        .replace('"', "'")
-        .replace("/", "_")
-        .replace("|", "_")
-        .replace(":", " -")
-        .replace("?", "")
-    )
+    # YTDL doesn't provide an API for getting the actual filename...
+    filename_pattern = re.sub(r"[^\w]+", ".*", str(result["title"]))
 
-    audio = Path(f"{title}-{result['id']}.mp3")
+    audio = next(Path().glob(filename_pattern))
     with audio.open("rb") as file:
         payload = file.read()
     audio.unlink()
