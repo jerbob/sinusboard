@@ -121,7 +121,7 @@ def upload_clip(link: str) -> dict:
     # Get the first video if a playlist (or search query) was provided
     result = result if not result.get("_type") == "playlist" else result["entries"][0]
     # YTDL doesn't provide an API for getting the actual filename...
-    filename_pattern = re.sub(r"[^\w]+", ".*", str(result["title"]))
+    filename_pattern = re.sub(r"[^\w]+", "*", f"{result['title']}*.mp3")
 
     audio = next(Path().glob(filename_pattern))
     with audio.open("rb") as file:
