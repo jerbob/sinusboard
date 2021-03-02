@@ -98,15 +98,6 @@ hr {
   user-select: none;
 }
 
-html::-webkit-scrollbar {
-  display: none;
-}
-
-html, body {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-}
-
 html,
 body {
     min-height: 100vh;
